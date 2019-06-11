@@ -1,0 +1,34 @@
+==== PODS =====
+- Always get an ip address assigned to a PODS
+- Node IP is not the same as POD Ip address.
+
+- When kubernetes is initally configured, an internal private network is configured
+Example:
+
+  Internal kubernetes address: 10.244.0.0.
+  then: pods might have an internal IP address of 10.244.0.2
+IP addresses are subject to change when pods are recreated
+
+If two nodes are running kubernetes, with 192.168.1.2 and 192.168.1.3 assigned
+and each one has a pod inide with an internal address of 10.244.0.2. This only works
+if they are individually deployed nodes.
+
+This will not work if the pods are of the same cluster.
+
+
+kubernetes does not automatically set up networking, it is expected we do it to meet
+requirements.
+
+* All containers/pods can communicate with each other without NAT
+* All nodes can communicate with all containers and vice versa without communicate
+
+FLannel/Weavenet is one of those solutions to help out with that.
+
+To solve the issue with multiple pods in same cluster, the solutions
+will assign internal address of 10.244.0.0 to first pod, then 10.244.1.0
+to second pod.
+
+Then internal addresses are assigned differently, first pod in 1st node assigned
+10.244.0.2 and first pod in 2nd node is 10.244.1.2.
+
+Every instance have a different ip address. 
