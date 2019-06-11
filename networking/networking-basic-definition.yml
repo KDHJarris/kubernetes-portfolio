@@ -31,4 +31,40 @@ to second pod.
 Then internal addresses are assigned differently, first pod in 1st node assigned
 10.244.0.2 and first pod in 2nd node is 10.244.1.2.
 
-Every instance have a different ip address. 
+Every instance have a different ip address.
+
+If you run the following command, it will output IP Addresses.
+```
+kubectl get pods -o wide
+```
+
+Pods get assigned random IP addresses every tiem so it is dynamic addresses.
+
+===================
+kubernetes Services- External networking
+===================
+
+***** Nodeport
+If you've got an app inside the pod, and its got its own internal IP Address.
+from your local workstation, you cannot access the POD directly.
+You can if you ssh directly to the kubernetes node and then curl the IP addresses
+cos you are part of the same network.
+
+
+But how to access the app from inside the pod outside?
+
+Need to map the request from laptop that you make to kubernetes node to the pod with the actual IP address inside,
+which is where kubernetes services called nodePort comes in.
+Maps a port on the node to the pod port.
+TargetPort= Pod port
+Port- the outgoing port on Service- Service is like its own server inside the pod, its got its own IP address.
+nodePort= valid ranges are from 30000 to 32767.
+
+Need to have labels that matches and itll filter out the ones matching the labels.
+Service uses random algorithm to balance out the nodes traffic.
+
+If you dont't define any of the ports, it will be configured automatically. Different IP addresses, same Ports are available on the cluster.
+
+
+There is also ClusterIP (Creates virtual IP address inside cluster to enable frontend to talk to backends )
+and Load balancer which distributes traffic.
